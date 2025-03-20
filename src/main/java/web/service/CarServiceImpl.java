@@ -11,21 +11,18 @@ import java.util.List;
 public class CarServiceImpl implements CarService {
 
     private final CarDao dao;
-    private final List<Car> cars;
 
     @Autowired
     public CarServiceImpl(CarDao dao) {
         this.dao = dao;
-        this.cars = dao.getCars();
     }
 
     @Override
     public List<Car> getCars(Integer n) {
-        try {
-            return cars.subList(0, n);
-        } catch (IndexOutOfBoundsException | NullPointerException e) {
-            return cars;
+        if (n != null && n < dao.getCars().size()) {
+            return dao.getCars().subList(0, n);
+        } else {
+            return dao.getCars();
         }
-
     }
 }
